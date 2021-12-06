@@ -235,8 +235,8 @@ console.log(oddFn(20)); // [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
  */
 
 function mainFunc(a, b, callback) {
-if (typeof callback != 'function') return 'false';
-return callback(a, b);
+if (callback && typeof callback != 'function') return callback(a, b);
+return 'false';
 };
 
 console.log(mainFunc(23, 23, function(){}));
