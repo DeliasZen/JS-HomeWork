@@ -66,7 +66,7 @@ console.log(defUpperStr());
  * #4
  *
  * Создайте функцию evenFn(n), которая принимает параметром число – количество итераций цикла,
- * т.е. for 0..n. Функция должна вернуть массив, состоящий только из четных значений, генерируемых в цикле.
+ * т.е. for 0..n. Функция должна вернуть массив, состоящий +только из четных значений, генерируемых в цикле.
  *
  * Причем:
  * 0 не должен попадать в результирующий массив
@@ -235,7 +235,7 @@ console.log(oddFn(20)); // [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
  */
 
 function mainFunc(a, b, callback) {
-if (callback && typeof callback != 'function') return callback(a, b);
+if (callback && typeof callback === 'function') return callback(a, b);
 return 'false';
 };
 
