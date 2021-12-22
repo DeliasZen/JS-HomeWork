@@ -1,129 +1,156 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable multiline-comment-style */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-useless-escape */
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable func-style */
 /* eslint-disable require-jsdoc */
+console.log('Sample JavaScript #7 HW #21');
 
-let container = null;
-let prevIndicator = null;
+/*
+ * #1
+ *
+ * replaceCSSComments() {...}
+ * Найдите и удалите все комментарии CSS.
+ * Функция получает строку, возвращает преобразованную строку, конечные пробелы должны быть удалены.
+ */
 
-const createContainer = function () {
-  elem = document.createElement('div');
+const replaceCSSComments = function (n) {
+  n = n.replace(/\/\*.+?\*\/\s?/g, '');
+  return n;
+};
 
-  elem.setAttribute('id', 'carousel');
-  document.querySelector('body').appendChild(elem);
-  container = document.querySelector('#carousel');
+console.log(replaceCSSComments('код без /*комментарий*/ комментов')); // код без комментов
+console.log(replaceCSSComments('код бе/*коммент1*/з ком/* коммент2 */ментов')); // код без комментов
+console.log(replaceCSSComments('код /*к1*/ без /* к2 */ коммент/*к3*/ов')); // код без комментов
+
+/*
+ * #2
+ *
+ * replaceHTMLComments() {...}
+ * Найдите и удалите все комментарии HTML.
+ * Функция получает строку, возвращает преобразованную строку.
+ */
+
+function replaceHTMLComments(n) {
+  return n.replace(/<!.+?>\s?/g, '').trim()
 }
 
-const createSlides = function (n) {
-  slidesContainer = document.createElement('ul');
-  slidesContainer.setAttribute('class', 'slides');
+console.log(replaceHTMLComments('<!--коммент1--> код без комментов <!--коммент2-->')); // код без комментов
+console.log(replaceHTMLComments('<!--к1--> код <!-- к2 --><!-- к3 --> без <!-- к4 --> комментов')); // код без комментов
+console.log(replaceHTMLComments('код <!--к1--> без <!-- к2 --> комментов')); // код без комментов
 
-  for (i = 0; i < n; i++) {
-    let slideItem = document.createElement('li');
-    let slideLink = document.createElement('a');
+/*
+ * #3
+ *
+ * validateFileType() {...}
+ * С помощью test определите, что переданная строка заканчивается расширениями: jpg, jpeg, png.
+ * Функция получает строку – имя файла, возвращает true или false.
+ */
 
-    slideItem.setAttribute('class', i === 0 ? 'slides__item active' : 'slides__item');
-    slideLink.setAttribute('href', '#');
-    slideItem.appendChild(slideLink);
-    slidesContainer.appendChild(slideItem);
-  };
-
-  container.appendChild(slidesContainer);
+function validateFileType(str) {
+  return (/.+(\.jpg|\.jpeg|\.png)$/).test(str);
 };
 
-const createIndicators = function (n) {
-  indicatorsContainer = document.createElement('div');
-  indicatorsContainer.setAttribute('class', 'indicators');
+console.log(validateFileType('image.png')); // true
+console.log(validateFileType('image.html')); // false
+console.log(validateFileType('image.file.jpg')); // true
+console.log(validateFileType('image.png.file')); // false
+console.log(validateFileType('image.png.jpeg')); // true
+console.log(validateFileType('image.pngjpeg')); // false
 
-  for (i = 0; i < n; i++) {
-    let indicatorsItem = document.createElement('span');
+/*
+ * #4
+ *
+ * checkYear() {...}
+ * Определите, что год находится в интервале от 1900 до 2100 с помощью одного только (единственного) регулярного выражения.
+ * Функция получает строку – год, возвращает true или false.
+ */
 
-    indicatorsItem.setAttribute('class', i === 0 ? 'indicators__item active' : 'indicators__item');
-    indicatorsItem.setAttribute('data-slide-to', i);
-    indicatorsContainer.appendChild(indicatorsItem);
-  };
-
-  container.appendChild(indicatorsContainer);
+function checkYear(year) {
+  return (/^(19\d\d|20\d\d|2100)$/).test(year);
 };
 
-const createControls = function () {
-  controlsContainer = document.createElement('div');
-  controlsContainer.setAttribute('class', 'controls');
+console.log(checkYear(1900)); // true
+console.log(checkYear(2001)); // true
+console.log(checkYear(2100)); // true
+console.log(checkYear(1899)); // false
+console.log(checkYear(20)); // false
+console.log(checkYear(200)); // false
+console.log(checkYear(20000)); // false
+console.log(checkYear('20000')); // false
+console.log(checkYear(19)); // false
+console.log(checkYear('19')); // false
+console.log(checkYear(2101)); // false
 
-  for (i = 0; i < 3; i++) {
-    let controlItem = document.createElement('div');
-    let controlIcon = document.createElement('i');
-    const defItemClass = 'controls__item';
-    const defIconClass = 'fas';
+/*
+ * #5
+ *
+ * checkEmail() {...}
+ * С помощью метода test определите, что переданная строка является имейлом. Примеры имейлов для тестирования: mymail@mail.ru, my.mail@mail.ua, my-mail@yahoo.com, mail@gmail.com
+ * Функция получает строку – имейл, возвращает true или false.
+ */
 
-    switch (i) {
-      case 0:
-        controlItem.setAttribute('class', `${defItemClass} controls__prev`);
-        controlIcon.setAttribute('class', `${defIconClass} fa-chevron-left`);
-        break;
-      case 1:
-        controlItem.setAttribute('class', `${defItemClass} controls__next`);
-        controlIcon.setAttribute('class', `${defIconClass} fa-chevron-right`);
-        break;
-      case 2:
-        controlItem.setAttribute('class', `${defItemClass} controls__pause`);
-        controlIcon.setAttribute('class', `${defIconClass} fa-play`);
-        break;
-    };
-    controlItem.appendChild(controlIcon);
-    controlsContainer.appendChild(controlItem);
-  };
-  container.appendChild(controlsContainer);
+function checkEmail(mail) {
+  return (/^[a-zA-Z-.]+@[a-z]+(\.[a-z]{2,3}){1,2}$/).test(mail);
 };
 
-const createStyle = function () {
-  styleContainer = document.createElement('style');
-  let styleCode = `
-  .controls,
-  .slides {
-    position: relative;
-  }
-  .indicators {
-    display: flex;
-  }
-  .indicators__item {
-    display: block;
-    width: 20px;
-    height: 20px;
-    background-color: gray;
-    margin: 5px;
-    border-radius; 10px;
-  }`;
+console.log(checkEmail('mail@gmail.com')); // true
+console.log(checkEmail('mail.name@mail.ua')); // true
+console.log(checkEmail('mail-name@mail.ua')); // true
+console.log(checkEmail('mail-name@mail.com.ua')); // true
+console.log(checkEmail('mail@gmail')); // false
+console.log(checkEmail('mail@gmail-com')); // false
+console.log(checkEmail(' mail-name@mail.com.ua')); // false
+console.log(checkEmail('mail-name@mail.com.ua ')); // false
 
-  styleContainer.innerHTML = styleCode;
-  container.appendChild(styleContainer);
+/*
+ * #6
+ *
+ * checkDomainUrl() {...}
+ * С помощью test определите, что переданная строка является доменом.
+ *     Протокол может быть как http, так и https.
+ *     Примеры доменов:
+ *     http://site.ua, https://my-site.com, https://site.com.ua, https://subdomain.site.com.ua
+ *         Функция получает строку – доменное имя, возвращает true или false.
+ */
+console.log('------------');
+function checkDomainUrl(domain) {
+  return (/^(http:\/\/|https:\/\/)[0-9a-zA-Z-._]+(\.[a-z]{2,4})$/).test(domain);
 };
 
-const indicatorsHandler = function (e) {
-  let target = e.target;
+console.log(checkDomainUrl('http://external.asd1230-123.asd_internal.asd.gm-_ail.com')); // true
+console.log(checkDomainUrl('http://domain.com')); // true
+console.log(checkDomainUrl('https://example.domain.com')); // true
+console.log(checkDomainUrl('https://example.domain-hyphen.com')); // true
+console.log(checkDomainUrl('http://example.domain-hyphen.com')); // true
+console.log(checkDomainUrl('http://www.domain.com')); // true
+console.log(checkDomainUrl('http://www.domain.info')); // true
+console.log(checkDomainUrl('http://www')); // false
+console.log(checkDomainUrl('https://domain')); // false
+console.log(checkDomainUrl(' https://domain')); // false
+console.log(checkDomainUrl('https://domain.com ')); // false
+console.log(checkDomainUrl('example.museum')); // false
+console.log(checkDomainUrl('example.domain-hyphen.com')); // false
+console.log(checkDomainUrl('www.domain.com')); // false
+console.log(checkDomainUrl('www.example.domain-hyphen.com')); // false
 
-  if (target.classList.contains('indicators__item')) {
-    target.style.backgroundColor = 'red';
+/*
+ * #7
+ *
+ * createLinksFromDomains() {...}
+ * С помощью replace замените в строке домены вида http://site.ua, https://site.com на <a href="http://site.ua" target="_blank">site.ua</a>.
+ * Протокол может быть как http, так и https.
+ * Функция получает произвольную строку текста с доменами (один и более), возвращает результат преобразования.
+ * В данном задании требуется использовать метод match().
+ */
 
-    if (prevIndicator !== null) prevIndicator.removeAttribute('style');
-
-    prevIndicator = target;
-  };
+function createLinksFromDomains(str) {
+  let reg = new RegExp('(http:|https:)\\/\\/(?!:\\/\\/)([a-zA-Z0-9-_]+\\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\\.[a-zA-Z]{2,5}', 'gi');
+  str.match(reg).forEach((item) => str = str.replace(item, `<a href="${item.slice(0, 1) + item.slice(1)}" target="_blank">${item.replace(/^(http:|https:)\/\//gi, '')}</a>`));
+  return str;
 };
 
-const setListener = function () {
-  let indicatorsContainer = document.querySelector('div.indicators');
-
-  indicatorsContainer.addEventListener('click', indicatorsHandler);
-};
-
-const createCarousel = function (slidesCount = 5) {
-  createContainer();
-  container = document.querySelector('#carousel');
-  createSlides(slidesCount);
-  createIndicators(slidesCount);
-  createControls();
-  createStyle();
-  setListener();
-};
-
-createCarousel(4);
+// <a href="http://site.ua">site.ua</a> text1 <a href="https://site.com">site.com</a> text2 <a href="https://site.com.ua">site.com.ua</a> text3 <a href="https://subdomain.my-site.com.ua">subdomain.my-site.com.ua</a> text4
+console.log(createLinksFromDomains('http://site.ua text1 https://site.com text2 https://site.com.ua text3 https://subdomain.my-site.com.ua text4'));
+// site.ua text1 <a href="https://site.com">site.com</a> text2 <a href="https://site.com.ua">site.com.ua</a> text3 subdomain.my-site.com.ua text4
+console.log(createLinksFromDomains('site.ua text1 https://site.com text2 https://site.com.ua text3 subdomain.my-site.com.ua text4'));
